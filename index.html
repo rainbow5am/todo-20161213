@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>search</title>
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/init.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/font.css">
+</head>
+
+<body>
+    <div class="header center">todos</div>
+    <div class="form center">
+        <input type="text" class="search_key" name="" placeholder="What needs to be done?">
+        <div class="result">
+            <div class="footer">
+                <ul class="list">
+                    <li >1 item left</li>
+                    <li class="text">All</li>
+                    <li class="active">Active</li>
+                    <li class="active">Completed</li>
+                    <li class="link">Clear completed</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('.search_key').bind('keypress', function(event) {
+        if (event.keyCode == "13") {
+            if ($('.search_key').val()) {
+                $('.result').prepend('<div class="item"><div class="radio"></div>' + $.trim($('input').val()) + '<span class="clear">x</span></div>');
+                $('.search_key').val('');
+            }
+        }
+        if ($('.result .item').length > 0) {
+            $('.result').addClass('show-footer');
+        }
+    })
+
+    $('.result').on('click', '.item', function() {
+        $(this).toggleClass('active');
+    })
+
+    $('.result').on('click', '.clear', function() {
+        $(this).parent().remove();
+        if ($('.result .item').length === 0) {
+            $('.result').removeClass('show-footer');
+        }
+    })
+    </script>
+</body>
+
+</html>
