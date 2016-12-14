@@ -19,10 +19,10 @@
         <div class="result">
             <div class="footer">
                 <ul class="list">
-                    <li >1 item left</li>
-                    <li class="text">All</li>
-                    <li class="active">Active</li>
-                    <li class="active">Completed</li>
+                    <li class="left-count"><span>0</span> item left</li>
+                    <li class="text active show-all">All</li>
+                    <li class="show-active">Active</li>
+                    <li class="show-complete">Completed</li>
                     <li class="link">Clear completed</li>
                 </ul>
             </div>
@@ -39,10 +39,22 @@
         if ($('.result .item').length > 0) {
             $('.result').addClass('show-footer');
         }
+        $('.left-count span').text(getLeftCount());
     })
 
     $('.result').on('click', '.item', function() {
         $(this).toggleClass('active');
+        $('.left-count span').text(getLeftCount());
+
+        if ($('.list li.active').hasClass('show-all')) {
+            $('.result .item').removeClass('hide');
+        } else if ($('.list li.active').hasClass('show-active')) {
+            $('.result .item').removeClass('hide');
+            $('.result .item.active').addClass('hide');
+        } else {
+            $('.result .item').removeClass('hide');
+            $('.result .item').not('.active').addClass('hide');
+        }
     })
 
     $('.result').on('click', '.clear', function() {
@@ -50,7 +62,38 @@
         if ($('.result .item').length === 0) {
             $('.result').removeClass('show-footer');
         }
+        $('.left-count span').text(getLeftCount());
     })
+
+    function getLeftCount() {
+        return $('.result .item').not('.active').length;
+    }
+
+    $('.show-all').on('click', function() {
+        $('.list .active').removeClass('active');
+        $(this).addClass('active');
+        $('.result .item').removeClass('hide');
+    });
+
+    $('.show-active').on('click', function() {
+        $('.list .active').removeClass('active');
+        $(this).addClass('active');
+        $('.result .item').removeClass('hide');
+        $('.result .item.active').addClass('hide');
+    });
+
+    $('.show-complete').on('click', function() {
+        $('.list .active').removeClass('active');
+        $(this).addClass('active');
+
+        $('.result .item').removeClass('hide');
+        $('.result .item').not('.active').addClass('hide');
+    });
+
+    $('.link').on('click', function() {
+        $('.result .item').remove();
+        $('.result').removeClass('show-footer');
+    });
     </script>
 </body>
 
